@@ -18,7 +18,6 @@ app.post("/signup", use(signup));
 app.post("/signin", use(signin));
 app.use("/static", express.static("static"));
 app.use(({ next }) => next(new apiError(404, "Not found", "server")));
-
 app.use(apiErrorHandler);
 
 export const server = () => {
@@ -33,7 +32,7 @@ export const server = () => {
     process.on("unhandledRejection", exitHandler(1, "Unhandled Promise"));
     process.on("SIGTERM", exitHandler(0, "SIGTERM"));
     process.on("SIGINT", exitHandler(0, "SIGINT"));
-  } catch (e) {
-    console.error("[server] ", e);
+  } catch (error) {
+    console.error("[server] ", error);
   }
 };
