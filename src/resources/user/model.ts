@@ -4,6 +4,7 @@ import { config } from "../../constants/config";
 const Schema = mongoose.Schema;
 
 export interface UserType extends mongoose.Document {
+  _id: mongoose.Types.ObjectId;
   first_name: string;
   last_name: string;
   username: string;

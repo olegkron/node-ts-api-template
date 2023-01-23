@@ -10,6 +10,12 @@ class apiError {
     this.params = params;
   }
 
+  static forbidden(msg: String, from: String, params?: Object) {
+    return new apiError(403, msg, from, params);
+  }
+  static unauthorized(msg: String, from: String, params?: Object) {
+    return new apiError(401, msg, from, params);
+  }
   static badRequest(msg: String, from: String, params?: Object) {
     return new apiError(400, msg, from, params);
   }

@@ -2,26 +2,30 @@
 
 This template provides a quick and easy setup for creating a REST API using Node.js, Express, Typescript and Mongoose. It includes the following features:
 
--   JWT tokens for user authentication and routes protection
--   Ready-to-go user model, controller, sign up, and sign in routes
--   Error handling
--   Optional websockets built with Socket.io
--   Graceful exits
--   Asynchronous logging with Pino
--   Ready-to-go access to AWS Parameter Store
+- JWT tokens for user authentication and routes protection
+- Ready-to-go user model, controller, sign up, and sign in routes
+- Optional websockets built with Socket.io
+- Image uploads with Multer
+- Environment variables management with dotenv
+- Error handling
+- Graceful exits
+- Asynchronous logging with Pino
+- Ready-to-go access to AWS Parameter Store
 
 ## Getting Started
 
 1.  Clone the repository: `git clone https://github.com/olegkron/node-ts-api-template.git`
 2.  Install dependencies: `npm install`
-3.  Create a .env file with the following values: 
+3.  Create a .env file with the following values:
+
 ```
-PORT=5000
+PORT=3000
 BASE_URL=http://localhost
 DB_URL=mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false&dbName=NODE_API
 JWT_SECRET=YOUR_SECRET
 NODE_ENV=production
 ```
+
 4.  Start the development server with `tsc && nodemon dist/index.js` or simply `npm start`
 5.  The API will be running on the port specified in the .env file
 
@@ -39,12 +43,15 @@ The template includes an optional implementation of websockets using Socket.io. 
 
 ## Built With
 
--   [Node.js](https://nodejs.org/)
--   [Express](https://expressjs.com/)
--   [Typescript](https://www.typescriptlang.org/)
--   [Mongoose](https://mongoosejs.com/)
--   [Pino](https://getpino.io/)
--   [Socket.io](https://socket.io/)
+- [Node.js](https://nodejs.org/)
+- [Express](https://expressjs.com/)
+- [Typescript](https://www.typescriptlang.org/)
+- [Mongoose](https://mongoosejs.com/)
+- [JWT](https://jwt.io/)
+- [Multer](https://www.npmjs.com/package/multer)
+- [dotenv](https://www.npmjs.com/package/dotenv)
+- [Pino](https://getpino.io/)
+- [Socket.io](https://socket.io/)
 
 ## Contributing
 
@@ -52,7 +59,7 @@ If you have any suggestions for improvements or find any bugs, feel free to open
 
 ## Authors
 
--   **Oleg Kron** - [olegkron](https://github.com/olegkron)
+- **Oleg Kron** - [olegkron](https://github.com/olegkron)
 
 ## License
 
