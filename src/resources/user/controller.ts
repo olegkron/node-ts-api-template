@@ -1,19 +1,9 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import sharp from "sharp";
 import { apiError } from "../../utils";
-import { Req } from "../../utils/types";
+import { FormDataReq, Req } from "../../utils/types";
 
-import { LeanDocument } from "mongoose";
-import { User, UserType } from "./model";
-
-export interface FormDataReq extends Request {
-  requester: LeanDocument<UserType>;
-  body: {
-    data: string;
-    type: string;
-  };
-  file: any;
-}
+import { User } from "./model";
 
 export const viewProfile = async (req: Req, res: Response, next: NextFunction) => {
   try {

@@ -35,7 +35,8 @@ export const signup = async (req: Req, res: Response, next: NextFunction) => {
 
     const user = await User.create({ username, password, first_name, last_name });
     const token = newToken(user);
-    return res.status(201).send({ token, success: true });
+    const [userData] = await User.aggregate([{ $match: { _id: user._id } }, { $project: { password: 0 } }]);
+    return res.status(201).send({ token, success: true, data: userData });
   } catch (error) {
     return next(apiError.internal(error, "signup"));
   }
@@ -52,7 +53,7 @@ export const signin = async (req: Req, res: Response, next: NextFunction) => {
     const match = await user.checkPassword(password);
     if (!match) return next(apiError.badRequest("Username & Password mismatch", "signin"));
     const token = newToken(user);
-    const [userInfo] = await User.aggregate([{ $match: { _id: user._id } }]);
+    const [userInfo] = await User.aggregate([{ $match: { _id: user._id } }, { $project: { password: 0 } }]);
     if (userInfo.is_banned) return next(apiError.badRequest("We can't log you in at the moment.", "signin"));
     return res.status(201).send({ token, data: userInfo });
   } catch (error) {
