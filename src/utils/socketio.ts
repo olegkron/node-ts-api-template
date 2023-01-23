@@ -19,7 +19,7 @@ export const socket_io = (httpServer: any) => {
     }
     io.use(function (socket: socketType) {
       if (socket.handshake.query && socket.handshake.query.token) {
-        jwt.verify(socket.handshake.query.token, config.secrets.jwt, async function (err: any, decoded: any) {
+        jwt.verify(socket.handshake.query.token.toString(), config.secrets.jwt, async function (err: any, decoded: any) {
           if (err) return new Error("[Socket.io]: Authentication error");
           socket.decoded = decoded;
           user = await getUser(socket.decoded.id);

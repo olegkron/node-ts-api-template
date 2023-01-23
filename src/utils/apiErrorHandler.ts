@@ -1,14 +1,6 @@
-import { Response } from "express";
 import apiError from "./apiError";
 import { log } from "./logger";
-export interface ApiErrorErr {
-  code?: number;
-  message?: string;
-  from?: string;
-  params?: any;
-}
-
-function apiErrorHandler(err: ApiErrorErr, res: Response) {
+function apiErrorHandler(err, req, res, next) {
   let from = err.from ? `[${err.from}]: ` : "";
   if (err instanceof apiError) {
     log.error(from + err.message);

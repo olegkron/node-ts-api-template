@@ -1,7 +1,7 @@
 import { NextFunction, Response } from "express";
 import Stripe from "stripe";
+import { Req } from "../utils/types";
 import apiError from "./apiError";
-import { Req } from "./auth";
 const PUBLISHABLE_KEY = process.env.STRIPE_PUBLIC_KEY;
 const SECRET_KEY = process.env.STRIPE_SECRET_KEY;
 const stripeApi = new Stripe(SECRET_KEY, { apiVersion: "2022-11-15" });

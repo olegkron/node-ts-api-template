@@ -1,6 +1,6 @@
 import { NextFunction, Response } from "express";
 import { apiError } from "../../utils";
-import { Req } from "../../utils/auth";
+import { Req } from "../../utils/types";
 
 import { User } from "./model";
 export const viewProfile = async (req: Req, res: Response, next: NextFunction) => {

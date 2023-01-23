@@ -1,13 +1,10 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
-import { LeanDocument } from "mongoose";
-import { config } from "../constants/config";
-import { User, UserType } from "../resources/user/model";
-import apiError from "./apiError";
 
-export interface Req extends Request {
-  requester: LeanDocument<UserType>;
-}
+import { config } from "../constants/config";
+import { User } from "../resources/user/model";
+import apiError from "./apiError";
+import { Req } from "./types";
 
 export const validateEmail = (email: string) => {
   let regex = /\S+@\S+\.\S+/;
