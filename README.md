@@ -14,6 +14,14 @@ This template provides a quick and easy setup for creating a REST API using Node
 
 1.  Clone the repository: `git clone https://github.com/olegkron/node-ts-api-template.git`
 2.  Install dependencies: `npm install`
+3.  Create a .env file with the following values: 
+```
+PORT=5000
+BASE_URL=http://localhost
+DB_URL=mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false&dbName=NODE_API
+JWT_SECRET=YOUR_SECRET
+NODE_ENV=production
+```
 4.  Start the development server with `tsc && nodemon dist/index.js` or simply `npm start`
 5.  The API will be running on the port specified in the .env file
 
