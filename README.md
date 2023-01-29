@@ -53,6 +53,16 @@ The template includes an optional implementation of websockets using Socket.io. 
 - [Pino](https://getpino.io/)
 - [Socket.io](https://socket.io/)
 
+## To-do's
+
+ - Nodemailer for easy email sending 
+ - Twilio for SMS verification
+ - Rate limiting
+ - Password reset functionality
+ - Support for different database types (PostgreSQL, MySQL)
+ - Caching (Redis)
+ - Password hashing with Argon
+ 
 ## Contributing
 
 If you have any suggestions for improvements or find any bugs, feel free to open a pull request or an issue.
