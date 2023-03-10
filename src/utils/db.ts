@@ -1,15 +1,18 @@
 import mongoose, { ConnectOptions } from "mongoose";
 import { config } from "../constants/config";
-import { log } from "./logger";
-const connect = (url = config.dbUrl) => {
+
+const connect = (url: string = config.dbUrl): Promise<typeof mongoose> => {
   return mongoose
     .connect(url, { useNewUrlParser: true, useUnifiedTopology: true } as ConnectOptions)
     .then(() => {
-      log.debug("db connected");
+      console.log("Connected to database.");
+      return mongoose;
     })
     .catch((err) => {
-      log.error("Couldn't connect to database. " + err);
+      console.error("Couldn't connect to database. " + err);
       process.exit(1);
     });
 };
+mongoose.set("strictQuery", false);
+
 export default connect;

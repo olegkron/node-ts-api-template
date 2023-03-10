@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import { User } from "../resources/user/model";
 import { Req } from "../utils/types";
 import apiError from "./apiError";
+
 const SECRET_KEY = process.env.STRIPE_SECRET_KEY;
 const stripeApi = new Stripe(SECRET_KEY, { apiVersion: "2022-11-15" });
 const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;

@@ -1,14 +1,23 @@
+import { NextFunction, Request, Response } from "express";
+import { termcolors } from "../constants/termcolors";
 import apiError from "./apiError";
-import { log } from "./logger";
-function apiErrorHandler(err, req, res, next) {
-  let from = err.from ? `[${err.from}]: ` : "";
+
+interface ApiError {
+  from: string;
+  code: number;
+  message: string;
+  params?: object;
+}
+
+function apiErrorHandler(err: ApiError, req: Request, res: Response, next: NextFunction) {
+  let from = err.from ? `${termcolors.fgRed}[${err.from}] ${err.code}: ${termcolors.reset}` : "";
   if (err instanceof apiError) {
-    log.error(from + err.message);
+    console.error(from + err.message);
     if (err.code === 500) res.status(500).json({ error: "Something went wrong." });
     else res.status(err.code).json({ error: err.message, ...err.params });
     return;
   }
-  log.error(from + err);
+  console.error(from + err);
   res.status(500).json({ error: "Something went horribly wrong." });
 }
 

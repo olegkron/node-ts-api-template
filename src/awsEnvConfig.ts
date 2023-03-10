@@ -2,12 +2,12 @@ import AWS from "aws-sdk";
 
 export const awsEnvConfig = async () => {
   const ssmClient = new AWS.SSM({
-    region: "eu-west-2",
+    region: process.env.AWS_REGION,
   });
 
   ssmClient.getParameter(
     {
-      Name: `NAMEOFPARAMETERSTORE`,
+      Name: process.env.SSM_PARAMETER_NAME,
       WithDecryption: true,
     },
     async (err, data) => {

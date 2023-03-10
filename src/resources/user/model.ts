@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import mongoose from "mongoose";
 import { config } from "../../constants/config";
+import { apiError } from "../../utils";
 const Schema = mongoose.Schema;
 
 export interface UserType extends mongoose.Document {
@@ -20,7 +21,7 @@ export interface UserType extends mongoose.Document {
   updatedAt: Date;
 }
 
-const userSchema = new Schema<UserType>(
+const userSchema: mongoose.Schema<UserType> = new Schema<UserType>(
   {
     first_name: {
       type: String,
@@ -39,6 +40,7 @@ const userSchema = new Schema<UserType>(
     username: {
       type: String,
       required: true,
+      trim: true,
     },
     password: {
       type: String,
@@ -69,33 +71,32 @@ const userSchema = new Schema<UserType>(
   { timestamps: true }
 );
 
-userSchema.pre<UserType>("save", function (next) {
-  if (!this.isModified("password")) return next();
-  bcrypt.genSalt(config.saltWorkFactor);
-  bcrypt.hash(this.password, 8, (err, hash) => {
-    if (err) return next(err);
-    this.password = hash;
-    next();
-  });
+userSchema.pre<UserType>("save", async function () {
+  try {
+    if (!this.isModified("password")) return;
+    const salt = await bcrypt.genSalt(config.saltWorkFactor);
+    this.password = await bcrypt.hash(this.password, salt);
+  } catch (error) {
+    throw apiError.internal(error, "pre save hook");
+  }
 });
 
-userSchema.pre<UserType>("findOneAndUpdate", function (next) {
-  if (!this.getUpdate().password) return next();
-  bcrypt.genSalt(config.saltWorkFactor);
-  bcrypt.hash(this.getUpdate().password, 8, (err, hash) => {
-    if (err) return next(err);
-    this.getUpdate().password = hash;
-    next();
-  });
+userSchema.pre<UserType>("findOneAndUpdate", async function () {
+  try {
+    if (!this.getUpdate().password) return;
+    const salt = await bcrypt.genSalt(config.saltWorkFactor);
+    this.getUpdate().password = await bcrypt.hash(this.getUpdate().password, salt);
+  } catch (error) {
+    throw apiError.internal(error, "pre findOneAndUpdate hook");
+  }
 });
 
-userSchema.methods.checkPassword = function (password) {
-  const passwordHash = this.password;
-  return new Promise((resolve, reject) => {
-    bcrypt.compare(password, passwordHash, (err, same) => {
-      if (err) return reject(err);
-      resolve(same);
-    });
-  });
+userSchema.methods.checkPassword = async function (password: string): Promise<boolean> {
+  try {
+    const same = await bcrypt.compare(password, this.password);
+    return same;
+  } catch (error) {
+    throw apiError.internal(error, "checkPassword");
+  }
 };
 export const User = mongoose.model<UserType>("User", userSchema);

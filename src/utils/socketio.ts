@@ -2,40 +2,53 @@ import jwt from "jsonwebtoken";
 import { LeanDocument } from "mongoose";
 import * as socketio from "socket.io";
 import { config } from "../constants/config";
-import { User, UserType } from "../resources/user/model.js";
-import apiError from "../utils/apiError.js";
-export const socket_io = (httpServer: any) => {
-  try {
-    const io = new socketio.Server().attach(httpServer);
-    let user: LeanDocument<UserType> | null;
-    const getUser = async (id: any) => {
-      let user = await User.findById(id).lean();
-      if (!user || user.is_banned) return null;
-      return user;
-    };
+import { User, UserType } from "../resources/user/model";
 
-    class socketType extends socketio.Socket {
-      decoded: any;
-    }
-    io.use(function (socket: socketType) {
-      if (socket.handshake.query && socket.handshake.query.token) {
-        jwt.verify(socket.handshake.query.token.toString(), config.secrets.jwt, async function (err: any, decoded: any) {
-          if (err) return new Error("[Socket.io]: Authentication error");
-          socket.decoded = decoded;
-          user = await getUser(socket.decoded.id);
-        });
-      } else {
-        return apiError.badRequest("Authentication error", "socketio");
+const getUser = async (id: any) => {
+  const user = await User.findOne({ _id: id }).lean<UserType>();
+  // If no user found or banned user , return null
+  return user && !user.is_banned ? user : null;
+};
+
+export const socketEvents = (socket: socketio.Socket, user: LeanDocument<UserType>) => {
+  socket.handshake.query &&
+    socket.handshake.query.token &&
+    jwt.verify(socket.handshake.query.token.toString(), config.secrets.jwt, async (err: any, decoded: any) => {
+      if (err) {
+        return console.error("[Socket.io]: Authentication error");
       }
-    }).on("connection", async (socket: socketType) => {
-      user = await getUser(socket.decoded.id);
-      await User.findOneAndUpdate({ _id: user._id }, { is_online: true, last_seen_online: Date.now(), socket_id: socket.id }).lean(); // online = true
-      socket.on("disconnect", async () => {
-        user = await getUser(socket.decoded.id);
-        await User.findOneAndUpdate({ _id: user._id }, { is_online: false }).lean(); // online = false
-      });
+      try {
+        user = await getUser(decoded.id);
+        if (!user) {
+          return console.error("[Socket.io]: Authentication failed.");
+        }
+        await User.findOneAndUpdate({ _id: user._id }, { $set: { is_online: true, last_seen_online: Date.now() } }, { lean: true });
+      } catch (error) {
+        return console.error(error.message);
+      }
     });
-  } catch (error) {
-    return apiError.internal(error, "socketio");
+
+  socket.on("disconnect", async () => {
+    if (user) {
+      try {
+        await User.findOneAndUpdate({ _id: user._id }, { $set: { is_online: false } }, { lean: true });
+      } catch (error) {
+        return console.error(error.message);
+      }
+    }
+  });
+};
+
+export const socketIO = async (server: any) => {
+  try {
+    const io = new socketio.Server().attach(server);
+    io.on("connection", async (socket: socketio.Socket) => {
+      let user: LeanDocument<UserType> | null = null;
+      // manage connection / disconnection events
+      socketEvents(socket, user);
+    });
+  } catch (err) {
+    console.error(err);
+    throw new Error("[Socket.IO] could not be started.");
   }
 };

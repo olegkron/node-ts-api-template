@@ -1,4 +1,4 @@
-// DEV config with local ENV variables
+// // DEV config with local ENV variables
 import "dotenv/config";
 import { server } from "./server";
 server();
