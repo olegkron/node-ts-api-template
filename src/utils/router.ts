@@ -1,6 +1,6 @@
 import { Router } from "express";
+import { upload } from "../middleware/multer";
 import * as user from "../resources/user/controller";
-import { upload } from "./multer";
 
 export const router = Router();
 const use = (fn) => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
