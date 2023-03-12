@@ -1,4 +1,30 @@
-export const termcolors = {
+type TermColors = {
+  reset: string;
+  bright: string;
+  dim: string;
+  underscore: string;
+  blink: string;
+  reverse: string;
+  hidden: string;
+  fgBlack: string;
+  fgRed: string;
+  fgGreen: string;
+  fgYellow: string;
+  fgBlue: string;
+  fgMagenta: string;
+  fgCyan: string;
+  fgWhite: string;
+  bgBlack: string;
+  bgRed: string;
+  bgGreen: string;
+  bgYellow: string;
+  bgBlue: string;
+  bgMagenta: string;
+  bgCyan: string;
+  bgWhite: string;
+};
+
+export const termcolors: TermColors = {
   reset: "\x1b[0m",
   bright: "\x1b[1m",
   dim: "\x1b[2m",

@@ -1,8 +1,8 @@
-// // DEV config with local ENV variables
-import "dotenv/config";
+import { devEnvConfig } from "./devEnvConfig"; // dev config
+devEnvConfig();
+
 import { server } from "./server";
 server();
 
-// AWS config with remote ENV variables
-// import { awsEnvConfig } from "./awsEnvConfig";
+// import { awsEnvConfig } from "./awsEnvConfig" // aws config
 // awsEnvConfig();

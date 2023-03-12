@@ -1,11 +1,12 @@
 import mongoose, { ConnectOptions } from "mongoose";
-import { config } from "../constants/config";
 
-const connect = (url: string = config.dbUrl): Promise<typeof mongoose> => {
+import { config, termcolors } from "../constants";
+const connect = (): Promise<typeof mongoose> => {
+  const dbUrl = `mongodb://${config.mongoDB.host}:${config.mongoDB.port}`;
   return mongoose
-    .connect(url, { useNewUrlParser: true, useUnifiedTopology: true } as ConnectOptions)
+    .connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true, dbName: config.mongoDB.dbName } as ConnectOptions)
     .then(() => {
-      console.log("Connected to database.");
+      console.log(termcolors.fgGreen + "Connected to database" + termcolors.reset);
       return mongoose;
     })
     .catch((err) => {

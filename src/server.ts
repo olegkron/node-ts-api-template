@@ -13,6 +13,7 @@ export const app = express();
 const use = (fn) => (req: Request, res: Response, next: NextFunction) => Promise.resolve(fn(req, res, next)).catch(next);
 app.use(pino({ level: config.logLevel }));
 app.use(helmet());
+// app.use(limiter);
 app.use(express.json());
 app.disable("etag");
 // app.use(morgan("dev"));

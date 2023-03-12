@@ -25,12 +25,13 @@
     "@types/redis": "^4.0.11",
     "aws-sdk": "^2.1294.0",
     "bcrypt": "^5.1.0",
-    "chalk": "^5.2.0",
     "compression": "^1.7.4",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-rate-limit": "^6.7.0",
     "helmet": "^6.0.1",
+    "ioredis": "^5.3.1",
+    "ioredis-mock": "^8.2.6",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.8.3",
     "morgan": "^1.10.0",
@@ -41,9 +42,9 @@
     "pino-pretty": "^9.1.1",
     "rate-limit-redis": "^3.0.1",
     "redis": "^4.6.5",
+    "redis-cli": "^2.1.2",
     "sharp": "^0.31.3",
     "socket.io": "^4.5.4",
-    "socketio": "^1.0.0",
     "stripe": "^11.7.0"
   }
 }
