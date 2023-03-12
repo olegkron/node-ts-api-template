@@ -1,7 +1,5 @@
 export const config = {
   port: process.env.PORT,
-  baseURL: process.env.BASE_URL,
-  dbUrl: process.env.DB_URL,
 
   mongoDB: {
     host: process.env.MONGODB_HOST,
