@@ -1,4 +1,4 @@
-import { config } from "./config";
-import { termcolors } from "./termcolors";
+import { config } from './config'
+import { termcolors } from './termcolors'
 
-export { termcolors, config };
+export { termcolors, config }

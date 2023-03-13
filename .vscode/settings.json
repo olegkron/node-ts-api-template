@@ -1,0 +1,7 @@
+{
+    "cSpell.words": [
+        "termcolors"
+    ],
+    "solidity.formatter": "none",
+    "editor.formatOnSave": true
+}
