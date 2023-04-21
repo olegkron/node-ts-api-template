@@ -1,28 +1,23 @@
-// import nodemailer from "nodemailer";
+import nodemailer from 'nodemailer'
+import { config } from '../constants'
 
-// export class Mailer {
-//   private transporter: nodemailer.Transporter;
+export const sendEmail = async (from: string, to: string, subject: string, html: string) => {
+  const transporter = nodemailer.createTransport({
+    host: config.email.host,
+    port: config.email.port,
+    secure: false, // set to true for SSL
+    auth: {
+      user: config.email.address,
+      pass: config.email.password,
+    },
+  })
 
-//   constructor() {
-//     this.transporter = nodemailer.createTransport({
-//       host: "smtp.gmail.com",
-//       port: 587,
-//       secure: false,
-//       auth: {
-//         user: "your-email@gmail.com",
-//         pass: "your-password",
-//       },
-//     });
-//   }
+  const mailOptions = {
+    from,
+    to,
+    subject,
+    html,
+  }
 
-//   async sendMail(to: string, subject: string, text: string) {
-//     const mailOptions: nodemailer.SendMailOptions = {
-//       from: "your-email@gmail.com",
-//       to,
-//       subject,
-//       text,
-//     };
-
-//     return this.transporter.sendMail(mailOptions);
-//   }
-// }
+  await transporter.sendMail(mailOptions)
+}
