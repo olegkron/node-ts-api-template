@@ -61,6 +61,6 @@ function restart_nginx() {
     echo "NGINX is not installed!"
     exit 1
   fi
-  sudo systemctl restart nginx
+  sudo systemctl restart nginx --if-available
 
 }

@@ -2,11 +2,19 @@
 source mongo.sh
 source nginx.sh
 source pm2.sh
+source clone.sh
 set -e
+
 
 function update_packages() {
     echo "Updating package lists and upgrading installed packages..."
     sudo apt update && sudo apt upgrade -y
+}
+
+function install_packages() {
+    # installs necessary packages such as git, curl, etc.
+    echo "Installing packages..."
+    sudo apt install -y git curl
 }
 
 function install_nvm() {
@@ -25,12 +33,14 @@ function install_nodejs() {
 }
 
 function main() {
-    update_packages
-    install_mongodb
-    enable_mongodb_service
-    install_nvm
-    load_nvm
-    install_nodejs
+    clone_repo
+#    update_packages
+#    install_packages
+#    install_mongodb
+#    enable_mongodb_service
+#    install_nvm
+#    load_nvm
+#    install_nodejs
 
     read -p "Do you want to set up PM2? (y/n): " setup_pm2_choice
     if [[ "$setup_pm2_choice" =~ [Yy] ]]; then

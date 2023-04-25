@@ -1,0 +1,2 @@
+ACCESS_TOKEN=<your_access_token>
+REPO_ADDRESS=https://github.com/<username>/<repo>.git
