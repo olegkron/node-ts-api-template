@@ -1,11 +1,12 @@
 import bcrypt from 'bcrypt'
-import mongoose from 'mongoose'
+import mongoose, {ObjectId, Types} from 'mongoose'
 import { config } from '../../constants/config'
 import { apiError } from '../../utils'
+
 const Schema = mongoose.Schema
 
 export interface UserType extends mongoose.Document {
-  _id: mongoose.Types.ObjectId;
+  _id: ObjectId;
   first_name: string;
   last_name: string;
   username: string;
@@ -15,6 +16,8 @@ export interface UserType extends mongoose.Document {
   plan: string;
   plan_expires_at: Date;
   is_email_verified: boolean;
+  referrer_id: ObjectId;
+  referral_ids: ObjectId[];
   checkPassword: (password: string) => Promise<boolean>;
   getUpdate: () => any;
   createdAt: Date;
@@ -67,6 +70,14 @@ const userSchema: mongoose.Schema<UserType> = new Schema<UserType>(
 			type: Boolean,
 			default: false,
 		},
+		referrer_id: {
+			type: mongoose.Types.ObjectId,
+			ref: 'User',
+		},
+		referral_ids: {
+			type: [mongoose.Types.ObjectId],
+			ref: 'User',
+		}
 	},
 	{ timestamps: true }
 )
@@ -99,4 +110,4 @@ userSchema.methods.checkPassword = async function (password: string): Promise<bo
 		throw apiError.internal(error, 'checkPassword')
 	}
 }
-export const User = mongoose.model<UserType>('User', userSchema)
+export const UserModel = mongoose.model<UserType>('User', userSchema)

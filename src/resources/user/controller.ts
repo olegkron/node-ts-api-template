@@ -3,13 +3,13 @@ import sharp from 'sharp'
 import { apiError } from '../../utils'
 import { FormDataReq, Req } from '../../utils/types'
 
-import { User } from './model'
+import { UserModel } from './model'
 
 export const viewProfile = async (req: Req, res: Response, next: NextFunction) => {
 	try {
 		const { user_target } = req.body
 		if (!user_target) return next(apiError.badRequest('No target specified', 'viewProfile'))
-		const user = await User.findOne({ _id: user_target })
+		const user = await UserModel.findOne({ _id: user_target })
 		if (!user) return next(apiError.notFound('User not found', 'viewProfile'))
 		res.status(200).json({
 			success: true,

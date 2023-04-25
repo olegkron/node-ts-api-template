@@ -2,9 +2,10 @@ import { NextFunction, Response } from 'express'
 import jwt from 'jsonwebtoken'
 
 import { config } from '../constants/config'
-import { User } from '../resources/user/model'
+import { UserModel } from '../resources/user/model'
 import apiError from '../utils/apiError'
 import { Req } from '../utils/types'
+import {ObjectId} from "mongoose";
 
 export const validateEmail = (email: string): boolean => {
 	const regex = /\S+@\S+\.\S+/
@@ -28,20 +29,42 @@ export const verifyToken = (token: string): Promise<any> =>
 		})
 	})
 
+
+const processReferral = async (referrer_username: string, newUser_id: ObjectId): Promise<void> => {
+  if (!referrer_username) return;
+
+  let referrerUser;
+  if (validateEmail(referrer_username)) {
+    referrerUser = await UserModel.findOne({ username: referrer_username }).lean();
+  } else if (validatePhone(referrer_username)) {
+    // Replace the phone field with the actual phone field in the UserModel
+    referrerUser = await UserModel.findOne({ phone: referrer_username }).lean();
+  }
+
+  if (referrerUser) {
+    await UserModel.findByIdAndUpdate(newUser_id, { referrer_id: referrerUser._id });
+    await UserModel.findByIdAndUpdate(referrerUser._id, { $push: { referral_ids: newUser_id } });
+  }
+};
+
+
 export const signup = async (req: Req, res: Response, next: NextFunction): Promise<Response | void> => {
 	try {
-		const { username, password, first_name, last_name } = req.body
+		const { username, password, first_name, last_name, referrer_username} = req.body
 		if (!username || !password || !first_name || !last_name) {
 			return next(apiError.badRequest('Not all required values were provided', 'signup'))
 		}
-		const existingUser = await User.findOne({ username }).lean()
+		const existingUser = await UserModel.findOne({ username }).lean()
 		if (existingUser) {
 			return next(apiError.badRequest('User already exists', 'signup'))
 		}
 
-		const user = await User.create({ username, password, first_name, last_name })
+		const user = await UserModel.create({ username, password, first_name, last_name })
+		await processReferral(referrer_username, user._id);
+
+
 		const token = newToken(user)
-		const [userData] = await User.aggregate([{ $match: { _id: user._id } }, { $project: { password: 0 } }])
+		const [userData] = await UserModel.aggregate([{ $match: { _id: user._id } }, { $project: { password: 0 } }])
 		return res.status(201).send({ token, success: true, data: userData })
 	} catch (error) {
 		return next(apiError.internal(error, 'signup'))
@@ -52,14 +75,14 @@ export const signin = async (req: Req, res: Response, next: NextFunction): Promi
 	try {
 		const { username, password } = req.body
 		if (!username || !password) return next(apiError.badRequest('Username & Password must be provided', 'signin'))
-		const user = await User.findOne({ username }).select('username password').exec()
+		const user = await UserModel.findOne({ username }).select('username password').exec()
 		if (!user) return next(apiError.badRequest('Username & Password mismatch', 'signin'))
 		const match = await user.checkPassword(password)
 		if (!match) return next(apiError.badRequest('Username & Password mismatch', 'signin'))
 
 		const token = newToken(user)
 
-		const [userInfo] = await User.aggregate([{ $match: { _id: user._id } }, { $project: { password: 0 } }])
+		const [userInfo] = await UserModel.aggregate([{ $match: { _id: user._id } }, { $project: { password: 0 } }])
 
 		if (userInfo.is_banned) {
 			return next(apiError.badRequest('We can\'t log you in at the moment.', 'signin'))
@@ -84,7 +107,7 @@ export const protect = async (req: Req, res: Response, next: NextFunction): Prom
 		return res.status(401).end()
 	}
 
-	const user = await User.findById(payload.id).select('-password').lean().exec()
+	const user = await UserModel.findById(payload.id).select('-password').lean().exec()
 	if (!user) {
 		return res.status(401).end()
 	} else if (user.is_banned) {
@@ -103,7 +126,7 @@ export const ifLoginExists = async (req: Req, res: Response, next: NextFunction)
 		if (type === 'phone' && !validatePhone(login)) return next(apiError.badRequest('Incorrect phone number format', 'ifLoginExists'))
 		if (type === 'email' && !validateEmail(login)) return next(apiError.badRequest('Incorrect email format', 'ifLoginExists'))
 
-		const user = await User.findOne({ [type === 'phone' ? 'login_primary' : 'login_secondary']: [login] }).lean()
+		const user = await UserModel.findOne({ [type === 'phone' ? 'login_primary' : 'login_secondary']: [login] }).lean()
 		if (user) {
 			return res.status(200).send({ exists: true })
 		} else {

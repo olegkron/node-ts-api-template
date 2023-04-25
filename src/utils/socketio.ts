@@ -2,10 +2,10 @@ import jwt from 'jsonwebtoken'
 import { LeanDocument } from 'mongoose'
 import * as socketio from 'socket.io'
 import { config } from '../constants/config'
-import { User, UserType } from '../resources/user/model'
+import { UserModel, UserType } from '../resources/user/model'
 
 const getUser = async (id: any) => {
-	const user = await User.findOne({ _id: id }).lean<UserType>()
+	const user = await UserModel.findOne({ _id: id }).lean<UserType>()
 	// If no user found or banned user , return null
 	return user && !user.is_banned ? user : null
 }
@@ -22,7 +22,7 @@ export const socketEvents = (socket: socketio.Socket, user: LeanDocument<UserTyp
 				if (!user) {
 					return console.error('[Socket.io]: Authentication failed.')
 				}
-				await User.findOneAndUpdate({ _id: user._id }, { $set: { is_online: true, last_seen_online: Date.now() } }, { lean: true })
+				await UserModel.findOneAndUpdate({ _id: user._id }, { $set: { is_online: true, last_seen_online: Date.now() } }, { lean: true })
 			} catch (error) {
 				return console.error(error.message)
 			}
@@ -31,7 +31,7 @@ export const socketEvents = (socket: socketio.Socket, user: LeanDocument<UserTyp
 	socket.on('disconnect', async () => {
 		if (user) {
 			try {
-				await User.findOneAndUpdate({ _id: user._id }, { $set: { is_online: false } }, { lean: true })
+				await UserModel.findOneAndUpdate({ _id: user._id }, { $set: { is_online: false } }, { lean: true })
 			} catch (error) {
 				return console.error(error.message)
 			}
