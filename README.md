@@ -1,47 +1,43 @@
-# Node.js + Typescript + Mongoose REST API Template
+<h1 align="center">Node.js + Typescript + Mongoose REST API Template 🚀</h1> <div align="center">
 
-This template provides a quick and easy setup for creating a REST API using Node.js, Express, Typescript and Mongoose. It includes the following features:
+[![Stars](https://img.shields.io/github/stars/olegkron/node-ts-api-template.svg?style=social)](https://github.com/olegkron/node-ts-api-template/stargazers) [![Forks](https://img.shields.io/github/forks/olegkron/node-ts-api-template.svg?style=social)](https://github.com/olegkron/node-ts-api-template/network/members) [![Contributors](https://img.shields.io/github/contributors/olegkron/node-ts-api-template.svg)](https://github.com/olegkron/node-ts-api-template/graphs/contributors) [![Issues](https://img.shields.io/github/issues/olegkron/node-ts-api-template.svg)](https://github.com/olegkron/node-ts-api-template/issues) [![MIT License](https://img.shields.io/github/license/olegkron/node-ts-api-template.svg)](https://github.com/olegkron/node-ts-api-template/blob/main/LICENSE)
 
-- JWT tokens for user authentication and routes protection
-- Ready-to-go user model, controller, sign up, and sign in routes
-- Optional websockets built with Socket.io
-- Image uploads with Multer
-- Environment variables management with dotenv
-- Error handling
-- Graceful exits
-- Asynchronous logging with Pino
-- Ready-to-go access to AWS Parameter Store
+</div>
 
-## Getting Started
+Quick and easy setup for creating a REST API using Node.js, Express, TypeScript and Mongoose.
 
-1.  Clone the repository: `git clone https://github.com/olegkron/node-ts-api-template.git`
-2.  Install dependencies: `npm install`
-3.  Create a .env file with the following values:
+## 🌟 Features
 
-```
-PORT=3000
-BASE_URL=http://localhost
-DB_URL=mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false&dbName=NODE_API
-JWT_SECRET=YOUR_SECRET
-NODE_ENV=production
-```
+- 🔒 JWT tokens for user authentication and routes protection
+- 📚 Ready-to-go user model, controller, sign up, and sign in routes
+- ⚡ Optional websockets built with Socket.io
+- 🖼️ Image uploads with Multer
+- 🔧 Environment variables management with dotenv
+- 💡 Error handling
+- 📝 Asynchronous logging with Pino
+- ☁️ Ready-to-go access to AWS Parameter Store
 
-4.  Start the development server with `tsc && nodemon dist/index.js` or simply `npm start`
-5.  The API will be running on the port specified in the .env file
+## 🚀 Getting Started
 
-## Usage
+1. Clone the repository: `git clone https://github.com/olegkron/node-ts-api-template.git`
+2. Install dependencies: `npm install`
+3. Create a .env file with your configurations.
+4. Start the development server with `npm start`.
+5. The API will be running on the port specified in the .env file
+
+## 📚 Usage
 
 The template includes a basic user model and routes for sign up and sign in. You can easily add more models and routes as needed.
 
 ### Authentication
 
-All routes are protected by default and require a valid JWT token to be included in the `Authorization` header of the request. You can use the provided `signup` and `login` routes to obtain a token.
+All routes are protected by default and require a valid JWT token to be included in the `Authorization` header of the request.
 
 ### Websockets
 
-The template includes an optional implementation of websockets using Socket.io. You can easily remove or add new websocket events as needed.
+The template includes an optional implementation of websockets using Socket.io.
 
-## Built With
+## 🛠️ Built With
 
 - [Node.js](https://nodejs.org/)
 - [Express](https://expressjs.com/)
@@ -53,24 +49,24 @@ The template includes an optional implementation of websockets using Socket.io. 
 - [Pino](https://getpino.io/)
 - [Socket.io](https://socket.io/)
 
-## To-do's
+## 📝 To-do's
 
- - Nodemailer for easy email sending 
- - Twilio for SMS verification
- - Rate limiting
- - Password reset functionality
- - Support for different database types (PostgreSQL, MySQL)
- - Caching (Redis)
- - Password hashing with Argon
- 
-## Contributing
+- Nodemailer for easy email sending
+- Twilio for SMS verification
+- Rate limiting
+- Password reset functionality
+- Support for different database types (PostgreSQL, MySQL)
+- Caching (Redis)
+- Password hashing with Argon
+
+## 🙌 Contributing
 
 If you have any suggestions for improvements or find any bugs, feel free to open a pull request or an issue.
 
-## Authors
+## 👥 Authors
 
 - **Oleg Kron** - [olegkron](https://github.com/olegkron)
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/olegkron/node-ts-api-template/blob/master/LICENSE) file for details.
