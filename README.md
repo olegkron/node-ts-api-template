@@ -1,9 +1,9 @@
 <h1 align="center">Node.js + Typescript + Mongoose REST API Template 🚀</h1> <div align="center">
+<img width="966" alt="node-ts-api" src="https://github.com/olegkron/node-ts-api-template/assets/47119689/24a76740-206b-4917-ac34-91b08f2de3e8">
 
 [![Stars](https://img.shields.io/github/stars/olegkron/node-ts-api-template.svg?style=social)](https://github.com/olegkron/node-ts-api-template/stargazers) [![Forks](https://img.shields.io/github/forks/olegkron/node-ts-api-template.svg?style=social)](https://github.com/olegkron/node-ts-api-template/network/members) [![Contributors](https://img.shields.io/github/contributors/olegkron/node-ts-api-template.svg)](https://github.com/olegkron/node-ts-api-template/graphs/contributors) [![Issues](https://img.shields.io/github/issues/olegkron/node-ts-api-template.svg)](https://github.com/olegkron/node-ts-api-template/issues) [![MIT License](https://img.shields.io/github/license/olegkron/node-ts-api-template.svg)](https://github.com/olegkron/node-ts-api-template/blob/main/LICENSE)
 
 </div>
-
 Quick and easy setup for creating a REST API using Node.js, Express, TypeScript and Mongoose.
 
 ## 🌟 Features
