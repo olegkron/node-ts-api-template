@@ -8,6 +8,7 @@ Quick and easy setup for creating a REST API using Node.js, Express, TypeScript 
 
 ## 🌟 Features
 
+- ⚡ SWC for blazing-fast builds compared to TSC
 - 🔒 JWT tokens for user authentication and routes protection
 - 📚 Ready-to-go user model, controller, sign up, and sign in routes
 - ⚡ Optional websockets built with Socket.io
