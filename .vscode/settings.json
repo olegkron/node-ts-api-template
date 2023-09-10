@@ -1,7 +1,5 @@
 {
-    "cSpell.words": [
-        "termcolors"
-    ],
-    "solidity.formatter": "none",
-    "editor.formatOnSave": true
+  "cSpell.words": ["termcolors"],
+  "solidity.formatter": "none",
+  "editor.formatOnSave": true
 }
