@@ -29,13 +29,13 @@ app.use(({ next }) => next(new apiError(404, 'Not found', 'server')))
 app.use(apiErrorHandler)
 
 export const server = () => {
-	try {
-		connect()
-		const httpServer = http.createServer(app)
-		// socketIO(httpServer); // optionally attach socket.io
-		httpServer.listen(config.port, () => console.log(`Server listening on port ${config.port}`))
-		addProcessListeners(httpServer)
-	} catch (error) {
-		console.error('[server] ', error)
-	}
+  try {
+    connect()
+    const httpServer = http.createServer(app)
+    // socketIO(httpServer); // optionally attach socket.io
+    httpServer.listen(config.port, () => console.log(`Server listening on port ${config.port}`))
+    addProcessListeners(httpServer)
+  } catch (error) {
+    console.error('[server] ', error)
+  }
 }

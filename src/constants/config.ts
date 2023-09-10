@@ -1,3 +1,10 @@
+import dotenv from 'dotenv'
+import path from 'path'
+
+const envPath = path.resolve(process.cwd(), '.env')
+dotenv.config({ path: envPath })
+console.log(`Loading environment variables from: ${envPath}`)
+
 export const config = {
   port: process.env.PORT,
   baseUrl: process.env.BASE_URL,
@@ -18,8 +25,6 @@ export const config = {
   awsRegion: process.env.AWS_REGION,
   awsParameterStorePath: process.env.AWS_PARAMETER_STORE_PATH,
   awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  redisHost: process.env.REDIS_HOST,
-  redisPort: process.env.REDIS_PORT,
   logLevel: process.env.LOG_LEVEL ?? 'info',
 
   email: {
