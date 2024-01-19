@@ -1,36 +1,39 @@
-import dotenv from 'dotenv'
-import path from 'path'
-
-const envPath = path.resolve(process.cwd(), '.env')
-dotenv.config({ path: envPath })
-console.log(`Loading environment variables from: ${envPath}`)
+export enum Env {
+  production = 'production',
+  development = 'development',
+  test = 'test',
+}
+export const initConfig = app => {
+  switch (config.env) {
+    case Env.production:
+      console.log('Production environment')
+      break
+    case Env.development:
+      console.log('Development environment')
+      break
+    case Env.test:
+      console.log('Test environment')
+      break
+    default:
+      throw new Error(`Unknown environment: ${config.env}`)
+  }
+}
 
 export const config = {
+  env: process.env.NODE_ENV,
   port: process.env.PORT,
   baseUrl: process.env.BASE_URL,
+  logLevel: process.env.LOG_LEVEL,
   mongoDB: {
     host: process.env.MONGODB_HOST,
     port: process.env.MONGODB_PORT,
     dbName: process.env.MONGODB_DB_NAME,
-    user: process.env.MONGODB_USER,
-    password: process.env.MONGODB_PASSWORD,
+    username: process.env.MONGODB_USERNAME,
+    password: process.env.MONGODB_PASSWORD
   },
-
   secrets: {
     jwt: process.env.JWT_SECRET,
-    jwtExp: 31557600, // 1 year
+    jwtExp: 31557600 // 1 year
   },
-
-  saltWorkFactor: 10,
-  awsRegion: process.env.AWS_REGION,
-  awsParameterStorePath: process.env.AWS_PARAMETER_STORE_PATH,
-  awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  logLevel: process.env.LOG_LEVEL ?? 'info',
-
-  email: {
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
-    address: process.env.EMAIL_ADDRESS,
-    password: process.env.EMAIL_PASSWORD,
-  },
+  saltWorkFactor: 10
 }

@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { type Request, type Response } from 'express'
 import rateLimit from 'express-rate-limit'
 import Redis from 'ioredis-mock'
 import RedisStore from 'rate-limit-redis'
@@ -7,10 +7,10 @@ import { config } from '../constants/config'
 // Initialize Redis client
 const redisClient = new Redis({
   host: config.redisHost,
-  port: parseInt(config.redisPort),
+  port: parseInt(config.redisPort)
 })
 
-redisClient.on('error', (err) => {
+redisClient.on('error', err => {
   console.error(`Error connecting to Redis: ${err.message}`)
 })
 
@@ -28,11 +28,11 @@ export const limiter = rateLimit({
   },
   store: new RedisStore({
     client: redisClient,
-    retryStrategy: (times) => {
+    retryStrategy: times => {
       if (times <= 3) {
         return 200 // wait 200ms before trying again
       }
-    },
+    }
   } as any),
   skip: function (req: Request) {
     // Skip rate limiting for requests coming from whitelisted IPs
@@ -43,5 +43,5 @@ export const limiter = rateLimit({
     // handle when a user exceeds the rate limit
     console.log(`Rate limit exceeded for IP ${req.ip}`)
     res.status(429).send('Too many requests, please try again later.')
-  },
+  }
 })

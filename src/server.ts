@@ -1,40 +1,41 @@
-import express, { NextFunction, Request, Response } from 'express'
-
-import helmet from 'helmet'
+import express from 'express'
 import * as http from 'http'
-import pino from 'pino-http'
-import { config } from './constants/config'
-import { compressionMiddleware } from './middleware/compression'
-import { apiError, apiErrorHandler, connect, protect, router, signin, signup } from './utils'
-import { addProcessListeners } from './utils/process'
+import apicache from 'apicache'
+import morgan from 'morgan'
+import compression from 'compression'
+import { config } from './constants'
+import { apiError, apiErrorHandler, connect } from './utils'
+import { killProcessOnPort } from './utils/killProcessOnPort'
+import { socketIO } from './utils/socketio'
 
 export const app = express()
-
-const use = (fn) => (req: Request, res: Response, next: NextFunction) => Promise.resolve(fn(req, res, next)).catch(next)
-app.use(pino({ level: config.logLevel }))
-app.use(helmet())
-// app.use(limiter);
+app.use(compression())
+app.use(apicache.middleware('5 minutes'))
 app.use(express.json())
 app.disable('etag')
-// app.use(morgan("dev"));
-app.use(compressionMiddleware())
+app.use(morgan('dev'))
 
-app.use('/uploads', express.static('uploads'))
-app.use('/api', protect, router)
-app.post('/signup', use(signup))
-app.post('/signin', use(signin))
-app.use('/static', express.static('static'))
+// app.use('/uploads', express.static('uploads'))
+// app.use('/api', protect, router)
+// app.post('/signup', use(signup))
+// app.post('/signin', use(signin))
+// app.use('/static', express.static('static'))
 
-app.use(({ next }) => next(new apiError(404, 'Not found', 'server')))
+app.use(({ next }) => {
+  next(new apiError(404, 'Not found', 'server'))
+})
 app.use(apiErrorHandler)
 
 export const server = () => {
   try {
-    connect()
-    const httpServer = http.createServer(app)
-    // socketIO(httpServer); // optionally attach socket.io
-    httpServer.listen(config.port, () => console.log(`Server listening on port ${config.port}`))
-    addProcessListeners(httpServer)
+    killProcessOnPort(config.port, () => {
+      connect()
+      const httpServer = http.createServer(app)
+      httpServer.listen(config.port, () => {
+        console.log(`Server listening on port ${config.port}`)
+      })
+      socketIO(httpServer)
+    })
   } catch (error) {
     console.error('[server] ', error)
   }

@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express'
+import { type NextFunction, type Request, type Response } from 'express'
 import { termcolors } from '../constants/termcolors'
 import apiError from './apiError'
 
@@ -9,7 +9,7 @@ interface ApiError {
   params?: object
 }
 
-function apiErrorHandler(err: ApiError, req: Request, res: Response, next: NextFunction) {
+function apiErrorHandler (err: ApiError, req: Request, res: Response, next: NextFunction) {
   const from = err.from ? `${termcolors.fgRed}[${err.from}] ${err.code}: ${termcolors.reset}` : ''
   if (err instanceof apiError) {
     console.error(from + err.message)

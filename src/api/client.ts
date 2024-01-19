@@ -1,12 +1,12 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosResponse } from 'axios'
 
 import { config } from '../constants/config'
 
 const instance: AxiosInstance = axios.create({
-  baseURL: config.baseUrl,
+  baseURL: config.baseUrl
 })
 
-export type ApiResponse<T> = {
+export interface ApiResponse<T> {
   data: T
   error?: string
   status: number
@@ -14,14 +14,14 @@ export type ApiResponse<T> = {
   ok: boolean
 }
 
-async function get<T>(url: string, axiosConfig?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+async function get<T> (url: string, axiosConfig?: AxiosRequestConfig): Promise<ApiResponse<T>> {
   try {
     const response: AxiosResponse<T> = await instance.get(url, axiosConfig)
     return {
       data: response.data,
       status: response.status,
       headers: response.headers,
-      ok: response.status >= 200 && response.status < 300,
+      ok: response.status >= 200 && response.status < 300
     }
   } catch (error) {
     const { response } = error
@@ -31,19 +31,19 @@ async function get<T>(url: string, axiosConfig?: AxiosRequestConfig): Promise<Ap
       error: response?.data?.error || "Couldn't reach server",
       status: response?.status || 500,
       headers: response?.headers,
-      ok,
+      ok
     }
   }
 }
 
-async function post<T>(url: string, data?: any, axiosConfig?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+async function post<T> (url: string, data?: any, axiosConfig?: AxiosRequestConfig): Promise<ApiResponse<T>> {
   try {
     const response: AxiosResponse<T> = await instance.post(url, data, axiosConfig)
     return {
       data: response.data,
       status: response.status,
       headers: response.headers,
-      ok: response.status >= 200 && response.status < 300,
+      ok: response.status >= 200 && response.status < 300
     }
   } catch (error) {
     const { response } = error
@@ -53,14 +53,14 @@ async function post<T>(url: string, data?: any, axiosConfig?: AxiosRequestConfig
       error: response?.data?.error || "Couldn't reach server",
       status: response?.status || 500,
       headers: response?.headers,
-      ok,
+      ok
     }
   }
 }
 
 const apiClient = {
   get,
-  post,
+  post
 }
 
 export default apiClient

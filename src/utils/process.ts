@@ -1,8 +1,8 @@
-import http from 'http'
+import type http from 'http'
 
 //! ISSUE: does not clear up the port after server is closed. (eg when ctrl+c is pressed)
-export function terminate(server, options = { coredump: false, timeout: 500 }) {
-  const exit = (code) => {
+export function terminate (server, options = { coredump: false, timeout: 500 }) {
+  const exit = code => {
     options.coredump ? process.abort() : process.exit(code)
   }
 

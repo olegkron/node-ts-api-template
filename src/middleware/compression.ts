@@ -1,5 +1,5 @@
 import compression from 'compression'
-import { Request, Response } from 'express'
+import { type Request, type Response } from 'express'
 
 export const compressionMiddleware = () => {
   return compression({
@@ -10,6 +10,6 @@ export const compressionMiddleware = () => {
       }
       // fallback to standard filter function
       return compression.filter(req, res)
-    },
+    }
   })
 }

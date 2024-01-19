@@ -3,5 +3,10 @@
   "trailingComma": "all",
   "semi": false,
   "bracketSameLine": false,
-  "printWidth": 160
+  "printWidth": 180,
+  "tabWidth": 1,
+  "useTabs": true,
+  "arrowParens": "avoid",
+  "endOfLine": "auto"
 }
+

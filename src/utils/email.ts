@@ -8,15 +8,15 @@ export const sendEmail = async (from: string, to: string, subject: string, html:
     secure: false, // set to true for SSL
     auth: {
       user: config.email.address,
-      pass: config.email.password,
-    },
+      pass: config.email.password
+    }
   })
 
   const mailOptions = {
     from,
     to,
     subject,
-    html,
+    html
   }
 
   await transporter.sendMail(mailOptions)

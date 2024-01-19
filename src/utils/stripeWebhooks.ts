@@ -1,7 +1,7 @@
-import { NextFunction, Response } from 'express'
+import { type NextFunction, type Response } from 'express'
 import Stripe from 'stripe'
 import { User } from '../resources/user/model'
-import { Req } from '../utils/types'
+import { type Req } from './types'
 import apiError from './apiError'
 
 const SECRET_KEY = process.env.STRIPE_SECRET_KEY
@@ -20,7 +20,10 @@ export const stripeWebhooks = async (req: Req, res: Response, next: NextFunction
   // Handle the event
   switch (event.type) {
     case 'charge.succeeded': {
-      if (!event.data.object.metadata._id) return next(apiError.badRequest('No _id in metadata', 'stripeWebhooks'))
+      if (!event.data.object.metadata._id) {
+        next(apiError.badRequest('No _id in metadata', 'stripeWebhooks'))
+        return
+      }
       await User.findOneAndUpdate({ _id: event.data.object.metadata._id }, { plan: 'paid' }).lean()
       //   const email = event["data"]["object"]["receipt_email"]; // contains the email that will receive the receipt for the payment (users email usually)
       console.log(`PaymentIntent was successful for ${event.data.object.metadata}!`)

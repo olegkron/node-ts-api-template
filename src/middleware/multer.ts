@@ -1,5 +1,5 @@
-import { Request } from 'express'
-import multer, { StorageEngine } from 'multer'
+import { type Request } from 'express'
+import multer, { type StorageEngine } from 'multer'
 
 export const storage: StorageEngine = multer.memoryStorage()
 
@@ -12,9 +12,9 @@ export const fileFilter = (req: Request, file: Express.Multer.File, cb: (error: 
 }
 
 export const upload = multer({
-  storage: storage,
+  storage,
   limits: {
-    fileSize: 1024 * 1024 * 5,
+    fileSize: 1024 * 1024 * 5
   },
-  fileFilter: fileFilter,
+  fileFilter
 })

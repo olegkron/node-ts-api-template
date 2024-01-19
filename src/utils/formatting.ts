@@ -18,8 +18,8 @@ dayjs.updateLocale('en', {
     M: 'a month',
     MM: '%dm',
     y: 'a year',
-    yy: '%dy',
-  },
+    yy: '%dy'
+  }
 })
 export default dayjs
 
@@ -42,15 +42,15 @@ export const formatNumber = (num: number, decimalPlaces = 2): string => num.toFi
 export const formatCurrency = (amount: number, currency = 'USD'): string =>
   new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency,
+    currency
   }).format(amount)
 
 // String formatting
-export const toTitleCase = (str: string): string => str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())
+export const toTitleCase = (str: string): string => str.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())
 
-export const toCamelCase = (str: string): string => str.replace(/([-_][a-z])/g, (group) => group.toUpperCase().replace('-', '').replace('_', ''))
+export const toCamelCase = (str: string): string => str.replace(/([-_][a-z])/g, group => group.toUpperCase().replace('-', '').replace('_', ''))
 
-export const toSnakeCase = (str: string): string => str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`).replace(/^-/, '')
+export const toSnakeCase = (str: string): string => str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`).replace(/^-/, '')
 
 // URL formatting
 export const slugify = (str: string): string =>

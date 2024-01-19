@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt'
 import mongoose from 'mongoose'
 import { config } from '../../constants/config'
 import { apiError } from '../../utils'
+
 const Schema = mongoose.Schema
 
 export interface UserType extends mongoose.Document {
@@ -28,47 +29,47 @@ const userSchema: mongoose.Schema<UserType> = new Schema<UserType>(
       required: true,
       trim: true,
       minlength: 2,
-      maxlength: 50,
+      maxlength: 50
     },
     last_name: {
       type: String,
       required: true,
       trim: true,
       minlength: 2,
-      maxlength: 50,
+      maxlength: 50
     },
     username: {
       type: String,
       required: true,
-      trim: true,
+      trim: true
     },
     password: {
       type: String,
-      required: true,
+      required: true
     },
     is_admin: {
       type: Boolean,
-      default: false,
+      default: false
     },
     is_banned: {
       type: Boolean,
-      default: false,
+      default: false
     },
     plan: {
       type: String,
       enum: ['free', 'pro'],
-      default: 'free',
+      default: 'free'
     },
     plan_expires_at: {
       type: Date,
-      default: Date.now,
+      default: Date.now
     },
     is_email_verified: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
-  { timestamps: true },
+  { timestamps: true }
 )
 
 userSchema.pre<UserType>('save', async function () {

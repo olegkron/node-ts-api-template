@@ -1,6 +1,6 @@
-import { Request } from 'express'
-import { LeanDocument } from 'mongoose'
-import { UserType } from '../resources/user/model'
+import { type Request } from 'express'
+import { type LeanDocument } from 'mongoose'
+import { type UserType } from '../resources/user/model'
 
 export interface Req extends Request {
   requester: LeanDocument<UserType>
